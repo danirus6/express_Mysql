@@ -49,7 +49,15 @@ app.get('/createProducts', (req, res) => {
     });
 });
 
+// app.post('/createProduct', (req, res) => {
+//     const sql = 'INSERT INTO products (id, name, price, category_id
 
+// });
+
+app.post('/createCategory', (req,res) =>{
+    const sql = `INSERT INTO categories (name) values ('${req.body.name}');`;
+
+});
 
 app.listen(PORT, () =>
     console.log(`This server is started at port http://localhost:${PORT}`)
