@@ -35,7 +35,7 @@ app.get('/categories', (req, res) => {
 });
 
 app.get('/productosConCategorias', (req, res) => {
-  const sql = `
+    const sql = `
     SELECT products.*, categories.name AS category_name
     FROM products
     INNER JOIN categories ON products.category_id = categories.id
@@ -43,8 +43,8 @@ app.get('/productosConCategorias', (req, res) => {
 
     db.query(sql, (err, result) => {
         if (err) throw err
-            console.log(result)
-            res.send('gg')
+        console.log(result)
+        res.send('gg')
     })
 });
 
@@ -97,8 +97,8 @@ app.get('/createCategories', (req, res) => {
 
     const sql = 'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL)';
 
-    db.query(sql,(err, result) => {
-        if(err) throw err;
+    db.query(sql, (err, result) => {
+        if (err) throw err;
         console.log(result);
         res.send('Categories created...');
     });
@@ -108,8 +108,8 @@ app.get('/createProducts', (req, res) => {
 
     const sql = 'CREATE TABLE products(id INTEGER PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255) NOT NULL, price INT NOT NULL,category_id INT, FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE ON UPDATE CASCADE)';
 
-    db.query(sql,(err, result) => {
-        if(err) throw err;
+    db.query(sql, (err, result) => {
+        if (err) throw err;
         console.log(result);
         res.send('Products created...');
     });
@@ -124,7 +124,7 @@ app.post('/createProduct', (req, res) => {
     })
 });
 
-app.post('/createCategory', (req,res) =>{
+app.post('/createCategory', (req, res) => {
     const sql = `INSERT INTO categories (name) values ('${req.body.name}');`;
 
     db.query(sql, (err, result) => {
@@ -135,44 +135,25 @@ app.post('/createCategory', (req,res) =>{
 });
 
 //UPDATES
-app.put('/category/id/:id', (req, res) =>{
-    
+app.put('/category/id/:id', (req, res) => {
+
     const sql = `UPDATE categories SET name = '${req.body.name}' WHERE id = ${req.params.id}`;
-   
+
     db.query(sql, (err, result) => {
         if (err) throw err
         res.send('Category updated...')
     })
 });
 
-app.put('/product/id/:id', (req, res) =>{
-
-    const productId = req.query.id;
-    const newName = req.query.name;
-    const newPrice = req.query.price;
-    const newCategoryId = req.query.category_id;
-
-    let updateQuery = 'UPDATE products SET ';
-    const updateValues = [];
-
-    if (newName) {
-        updateQuery += 'name = ?, ';
-        updateValues.push(newName);
+app.put('/product/id/:id', (req, res) => {
+    const productId = req.params.id;
+    const newProduct = {
+        //EJEMPLOS DE COMO RECOGER DATOS
+        name: req.body.name ? req.body.name : name,
+        price: req.body.price || price
     }
+    const sql = `UPDATE products SET name = '${newProduct.name}' AND price= '${newProduct.price}' WHERE id = ${product.id}`;
 
-    if (newPrice) {
-        updateQuery += 'price = ?, ';
-        updateValues.push(newPrice);
-    }
-
-    if (newCategoryId) {
-        updateQuery += 'category_id = ?, ';
-        updateValues.push(newCategoryId);
-    }
-
-    updateQuery = updateQuery.slice(0, -2) + ' WHERE id = ?';
-    updateValues.push(productId);
-    
     db.query(updateQuery, updateValues, (error, results) => {
         if (error) {
             res.status(500).json({ error: 'Error' });
