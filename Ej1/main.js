@@ -137,9 +137,9 @@ app.post('/createCategory', (req,res) =>{
 
 //UPDATES
 app.put('/category/id/:id', (req, res) =>{
-    if(req.body.name){
-        const sql = `UPDATE categories SET name = '${req.body.name}' WHERE id = ${req.params.id}`;
-    }
+    
+    const sql = `UPDATE categories SET name = '${req.body.name}' WHERE id = ${req.params.id}`;
+   
     db.query(sql, (err, result) => {
         if (err) throw err
         res.send('Category updated...')
