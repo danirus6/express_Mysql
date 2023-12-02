@@ -1,6 +1,6 @@
 const db = require('../config/database.js')
 
-//CAMBIAR TODO
+
 const CategoryController = {
     create(req, res) {
 
