@@ -152,7 +152,7 @@ app.put('/product/id/:id', (req, res) => {
         name: req.body.name ? req.body.name : name,
         price: req.body.price || price
     }
-    const sql = `UPDATE products SET name = '${newProduct.name}' AND price= '${newProduct.price}' WHERE id = ${product.id}`;
+    const sql = `UPDATE products SET name = '${newProduct.name}' AND price= '${newProduct.price}' WHERE id = ${productId.id}`;
 
     db.query(updateQuery, updateValues, (error, results) => {
         if (error) {
